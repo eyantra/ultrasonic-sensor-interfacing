@@ -1,9 +1,7 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
+
+Microsoft Visual Studio Solution File, Format Version 11.00
 # Atmel Studio Solution File, Format Version 11.00
-VisualStudioVersion = 14.0.23107.0
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "UltrasonicSensorInterfacing", "UltrasonicSensorInterfacing\UltrasonicSensorInterfacing.cproj", "{7E9FE2A6-B644-4665-96D7-274E3065961C}"
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "UltrasonicSensorInterfacing", "UltrasonicSensorInterfacing\UltrasonicSensorInterfacing_6_0.cproj", "{7E9FE2A6-B644-4665-96D7-274E3065961C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

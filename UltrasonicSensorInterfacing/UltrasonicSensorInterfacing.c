@@ -2,58 +2,55 @@
  * SensorInterfacing.c
  *
  * Created: 27-Sep-19 9:04:13 AM
- * 
- */ 
+ * Modified: 28-Oct-19 11:01:02 AM
+ * Author: Debdut
+ * Modifier: Debdut
+ */
 
+#define F_CPU 14745600UL
+//#define F_CPU 16000000UL
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
+#include "lcd.h"
+#include "ud.h"
 
-#include <math.h> //included to support power function
-#include "lcd.c"
-
-void lcd_port_config (void)
-{
-	DDRC = DDRC | 0xF7; //all the LCD pin's direction set as output
-	PORTC = PORTC & 0x80; // all the LCD pins are set to logic 0 except PORTC 7
-}
+void port_init();
+void init_devices(void);
 
 void port_init()
 {
-	lcd_port_config();
+	lcd_init();
+	ud_init();
 }
 
-void init_devices (void)
+void init_devices(void)
 {
-	cli(); //Clears the global interrupts
+	cli();
 	port_init();
-	sei(); //Enables the global interrupts
-}
-
-unsigned int ultrasonicReading(){
-	
-	unsigned int ultrasonicValue = 0;
-	
-	return ultrasonicValue;
+	sei();
 }
 
 int main(void)
 {
 	init_devices();
 	
-	lcd_init();
+	lcd_cursor(1,3);
+	lcd_string("HACTOBER-2K19");
+	lcd_cursor(2,4);
+	lcd_string("OPENSOURCE");
+	_delay_ms(2000);
+	lcd_clear();
 	
-	//This is just an example listed below. You can update each of the variables however you want
-	int row = 1;
-	int column = 3;
-	int sensorVal = 500;
-	int digits = 4;
+	lcd_cursor(1,5);
+	lcd_string("DISTANCE");
+	lcd_cursor(2,10);
+	lcd_string("CM");
 	
-    while(1)
-    {
-		//Call function and print them on the LCD
-		//Use the following function to print out your sensor reading
-		lcd_print(row, column, sensorVal, digits);
-    }
+	while(1)
+	{	
+		lcd_print(2,6,ultrasonicReading(),4);
+		_delay_ms(500);
+	}
 }
