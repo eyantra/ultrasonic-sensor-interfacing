@@ -78,15 +78,15 @@ bool ud_getData()
 	
 	ud_wake();
 	pulseWidthTimeUs = ud_getPulse();
-	if(pulseWidthTimeUs >= UD_MAX_ECHO_TIME)
+	if(pulseWidthTimeUs >= UD_MAX_ECHO_TIME) //IF ECHO PULSE TIME GETS IT'S MAXIMUM THEN RETURN TRUE AND CALCULATE DISTANCE IN cm WITH FIXED MAX ECHO TIME
 	{
 		ud_distanceCm = UD_MAX_ECHO_TIME * 0.034 / 2;
 		return true;
 	}
 	
-	if(pulseWidthTimeUs != UD_TIMEOUT)
+	if(pulseWidthTimeUs != UD_TIMEOUT) //IF TIMEOUT HAS NOT OCCURED THEN RETURN TRUE AND CALCULATE DISTANCE IN cm
 	{
-		ud_distanceCm = pulseWidthTimeUs * 0.034 / 2;
+		ud_distanceCm = pulseWidthTimeUs * 0.034 / 2; //CALCULATE DISTANCE IN cm { Distance in cm = Echo pulse time in microseconds * Speed of sound in centimeter per micro second / 2 }
 		return true;
 	}
 	
@@ -96,30 +96,30 @@ bool ud_getData()
 //Function to get distance reading
 uint16_t ultrasonicReading()
 {
-	if(ud_getData())
+	if(ud_getData()) //IF ABLE TO GET DATA THEN RETURN DISTANCE IN cm
 		return ud_distanceCm;
 	else
 		return (uint16_t)NAN;
 }
 
-//Function to get echo pulse duration in clock cycles
+//Function to get echo pulse duration in micro seconds
 uint32_t ud_getPulse()
 {
-	uint32_t cycles = 0;
-	uint32_t pulseWidthCycles = 0;
+	uint32_t cycles = 0; //FOR COUNTING CLOCK CYCLES
+	uint32_t pulseWidthCycles = 0; //FOR COUNTING CLOCK CYCLES IN ECHO PULSE
 	
 	//Wait for if any earlier echo high pulse to end
 	while(((UD_PDR & (1 << UD_ECHO_PIN)) >> UD_ECHO_PIN) == 1)
 	{
 		if(cycles++ >= UD_MAX_CYCLE)
-			return UD_TIMEOUT;
+			return UD_TIMEOUT; //IF MAX CYCLES EXCEEDED THEN RETURN UD_TIMEOUT
 	}
 	
 	//Wait for the echo high pulse to start
 	while(((UD_PDR & (1 << UD_ECHO_PIN)) >> UD_ECHO_PIN) != 1)
 	{
 		if(cycles++ >= UD_MAX_CYCLE)
-			return UD_TIMEOUT;
+			return UD_TIMEOUT; //IF MAX CYCLES EXCEEDED THEN RETURN UD_TIMEOUT
 	}
 	
 	//Timing critical code is starting
@@ -129,9 +129,9 @@ uint32_t ud_getPulse()
 	while(((UD_PDR & (1 << UD_ECHO_PIN)) >> UD_ECHO_PIN) == 1)
 	{
 		if(cycles++ >= UD_MAX_CYCLE)
-			return UD_TIMEOUT;
+			return UD_TIMEOUT; //IF MAX CYCLES EXCEEDED THEN RETURN UD_TIMEOUT
 			
-		pulseWidthCycles++;
+		pulseWidthCycles++; //COUNT CYCLES UNTILL ECHO HIGH PULSE ENDS
 	}
 	
 	//Timing critical code is ending
